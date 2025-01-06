@@ -3,6 +3,7 @@ import SignUpForm from "./auth/forms/SignUpForm";
 import SignInForm from "./auth/forms/SignInForm";
 import AuthLayout from "./auth/AuthLayout";
 import Home from "./root/pages/Home";
+import Layout from "./root/Layout";
 
 function App() {
   return (
@@ -14,7 +15,9 @@ function App() {
           <Route path="/signup" element={<SignUpForm />} />
         </Route>
         {/* Private Routes */}
-        <Route path="/" element={<Home />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+        </Route>
       </Routes>
     </Router>
   );

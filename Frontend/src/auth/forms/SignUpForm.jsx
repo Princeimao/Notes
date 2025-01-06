@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { signUpFormSchema } from "../../validation";
 import { useRegisterUser } from "../../hooks/useAuth";
+import { Loader } from "lucide-react";
 
 const SignUpForm = () => {
   const { mutateAsync: registerUser, isPending: isCreatingUser } =
@@ -28,8 +29,7 @@ const SignUpForm = () => {
   });
 
   const onSubmit = async (values) => {
-    const newUser = await registerUser(values);
-    console.log(newUser);
+    // something to do
   };
 
   return (
@@ -103,7 +103,7 @@ const SignUpForm = () => {
                 className="w-full bg-blue-500 hover:bg-blue-600 active:bg-blue-700"
                 type="submit"
               >
-                {isCreatingUser ? "Loader" : "Register User"}
+                {isCreatingUser ? <Loader /> : "submit"}
               </Button>
             </form>
           </Form>
