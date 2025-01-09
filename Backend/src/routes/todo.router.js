@@ -5,7 +5,7 @@ import {
   getAllTodo,
   updateTodo,
 } from "../controller/todo.controller.js";
-import { authMiddleware } from "../controller/user.controller.js";
+import { authMiddleware } from "../middleware/Auth.middleware.js";
 
 const router = express.Router();
 

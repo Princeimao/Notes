@@ -123,31 +123,6 @@ export const loginUser = async (req, res) => {
   }
 };
 
-export const authMiddleware = (req, res, next) => {
-  try {
-    const authHeader = req.headers.authorization;
-
-    const token = authHeader.split(" ")[1];
-
-    if (!token) {
-      return res.status(400).json({
-        success: false,
-        message: "Unauthorized request, Token not found",
-      });
-    }
-
-    const result = jwt.verify(token, process.env.SECRET_TOKEN);
-
-    req.user = result;
-    next();
-  } catch (error) {
-    console.log(
-      "something went wrong while getting user or Unauthorized request",
-      error
-    );
-  }
-};
-
 export const getUser = async (req, res) => {
   try {
     const { email } = req.user;
@@ -171,5 +146,33 @@ export const getUser = async (req, res) => {
     });
   } catch (error) {
     console.log("something went wrong while getting an user", error);
+  }
+};
+
+export const logoutUser = async (req, res) => {
+  try {
+    const { email } = req.user;
+
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Token or User not found",
+      });
+    }
+
+    res.cookie("Token", "", httpOnlyCookie);
+
+    return res.status(200).json({
+      success: true,
+      message: "User logged out successfully",
+    });
+  } catch (error) {
+    console.log("Something went wrong while logout", error);
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong during logout",
+    });
   }
 };

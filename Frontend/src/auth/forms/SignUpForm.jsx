@@ -1,3 +1,5 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -14,8 +16,14 @@ import { Input } from "@/components/ui/input";
 import { signUpFormSchema } from "../../validation";
 import { useRegisterUser } from "../../hooks/useAuth";
 import { Loader } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { register } from "../../context/features/userSlice";
+//import { useToast } from "../../hooks/use-toast";
 
 const SignUpForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { mutateAsync: registerUser, isPending: isCreatingUser } =
     useRegisterUser();
 
@@ -29,7 +37,14 @@ const SignUpForm = () => {
   });
 
   const onSubmit = async (values) => {
-    // something to do
+    try {
+      const response = await registerUser(values);
+      dispatch(register(response.user));
+      localStorage.setItem("token", response.user.token);
+      navigate("/");
+    } catch (error) {
+      console.log("something went wrong while creating user", error);
+    }
   };
 
   return (

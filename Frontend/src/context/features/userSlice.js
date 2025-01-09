@@ -8,7 +8,7 @@ const initialUser = {
 };
 
 const initialState = {
-  user: initialUser,
+  user: null,
   isLoading: false,
   isAuthenticated: false,
 };
@@ -17,7 +17,7 @@ export const checkAuthenticatedUser = createAsyncThunk(
   "auth/checkAuthenticatedUser",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get("/api/auth/user/getUser");
+      const response = await axiosInstance.get("/api/user/auth/getUser");
       return response.data;
     } catch (error) {
       console.log("some thing went wrong while getting user", error);
@@ -35,6 +35,11 @@ const authSlice = createSlice({
         (state.isLoading = false),
         (state.isAuthenticated = true);
     },
+    login: (state, action) => {
+      (state.user = action.payload),
+        (state.isLoading = false),
+        (state.isAuthenticated = true);
+    },
     logout: (state) => {
       (state.user = initialUser),
         (state.isLoading = false),
@@ -47,18 +52,20 @@ const authSlice = createSlice({
         (state.user = null),
           (state.isLoading = true),
           (state.isAuthenticated = false);
+        console.log(state.user);
       })
       .addCase(checkAuthenticatedUser.fulfilled, (state, action) => {
-        (state.user = action.payload),
-          (state.isLoading = false),
-          (state.isAuthenticated = true);
+        (state.user = action.payload), (state.isAuthenticated = true);
+        state.isLoading = false;
+        console.log(state.user);
       })
       .addCase(checkAuthenticatedUser.rejected, (state) => {
         (state.user = null),
           (state.isLoading = false),
           (state.isAuthenticated = false);
+        console.log(state.user);
       }),
 });
 
-export const { register, logout } = authSlice.actions;
+export const { register, login, logout } = authSlice.actions;
 export default authSlice.reducer;

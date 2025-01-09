@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,8 +12,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { signInFormSchema } from "../../validation";
+import { useLoginUser } from "../../hooks/useAuth";
+import { useDispatch } from "react-redux";
+import { login } from "../../context/features/userSlice";
+import { Loader } from "lucide-react";
 
 const SignInForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { mutateAsync: loginUser, isPending: isloading } = useLoginUser();
+
   const form = useForm({
     resolver: zodResolver(signInFormSchema),
     defaultValues: {
@@ -23,7 +32,14 @@ const SignInForm = () => {
   });
 
   const onSubmit = async (values) => {
-    console.log("values", values);
+    try {
+      const response = await loginUser(values);
+      dispatch(login(response.user));
+      localStorage.setItem("token", response.user.token);
+      navigate("/");
+    } catch (error) {
+      console.log("something went wrong while creating user", error);
+    }
   };
 
   return (
@@ -79,7 +95,7 @@ const SignInForm = () => {
                 className="w-full bg-blue-500 hover:bg-blue-600 active:bg-blue-700"
                 type="submit"
               >
-                Submit
+                {isloading ? <Loader /> : "submit"}
               </Button>
             </form>
           </Form>

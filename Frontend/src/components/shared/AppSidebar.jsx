@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Link } from "react-router-dom";
 import { SidebarFooter } from "../ui/sidebar";
+import { useSelector } from "react-redux";
 
 const items = [
   {
@@ -55,19 +56,14 @@ const items = [
 ];
 
 export function AppSidebar() {
+  const { user } = useSelector((state) => state.auth);
   return (
     <Sidebar collapsible="offcanvas">
       {/* Header Area */}
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuItem className="hover:bg-primary-100 p-2 rounded-lg transition-all ease-linear active:bg-zinc-800">
-              <img
-                className="w-40"
-                src="/Login_Page_Logo_white.png"
-                alt="Logo"
-              />
-            </SidebarMenuItem>
+          <SidebarMenuItem className="hover:bg-primary-100 p-2 rounded-lg transition-all ease-linear active:bg-zinc-800">
+            <img className="w-40" src="/Login_Page_Logo_white.png" alt="Logo" />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
@@ -148,7 +144,7 @@ export function AppSidebar() {
             <DropdownMenu className="text-white">
               <DropdownMenuTrigger asChild className="text-white">
                 <SidebarMenuButton className="py-5">
-                  <User2 /> Username
+                  <User2 /> {user?.user.name}
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
@@ -159,9 +155,11 @@ export function AppSidebar() {
                 <DropdownMenuItem>
                   <span>Account</span>
                 </DropdownMenuItem>
+
                 <DropdownMenuItem>
                   <span>Setting</span>
                 </DropdownMenuItem>
+
                 <DropdownMenuItem>
                   <span>Logout</span>
                 </DropdownMenuItem>
