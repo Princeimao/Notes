@@ -1,6 +1,26 @@
-import { Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Loader } from "lucide-react";
 
 const AuthLayout = () => {
+  const { isLoading, isAuthenticated } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate("/");
+    }
+  }, [isLoading, isAuthenticated, navigate]);
+
+  if (isLoading) {
+    return (
+      <main className="bg-primary-100 h-screen w-full text-white flex justify-center items-center">
+        <Loader />
+      </main>
+    );
+  }
+
   return (
     <div className="bg-primary-100 flex justify-center items-center h-screen ">
       <div className="w-1/2 hidden lg:flex flex-col justify-center items-center">

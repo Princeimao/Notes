@@ -10,13 +10,15 @@ const Layout = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(checkAuthenticatedUser());
+  useEffect(() => {
+    dispatch(checkAuthenticatedUser());
+  }, [dispatch]);
 
-  //   if (isAuthenticated === false) {
-  //     navigate("/signin");
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      navigate("/signin");
+    }
+  }, [isLoading, isAuthenticated, navigate]);
 
   if (isLoading) {
     return (

@@ -28,9 +28,22 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import { Button } from "../ui/button";
+
 import { Link } from "react-router-dom";
 import { SidebarFooter } from "../ui/sidebar";
 import { useSelector } from "react-redux";
+import NoteForm from "./form/NoteForm";
 
 const items = [
   {
@@ -56,6 +69,8 @@ const items = [
 ];
 
 export function AppSidebar() {
+  // const createNote = async () => {};
+
   const { user } = useSelector((state) => state.auth);
   return (
     <Sidebar collapsible="offcanvas">
@@ -124,15 +139,33 @@ export function AppSidebar() {
               </DropdownMenu>
             </SidebarMenuItem>
 
-            <SidebarMenuButton
-              asChild
-              className="flex justify-start items-center px-4 py-5"
-            >
-              <div>
-                <Plus />
-                <span>Add New List</span>
-              </div>
-            </SidebarMenuButton>
+            <Dialog>
+              <SidebarMenuItem>
+                <DialogTrigger className="w-full">
+                  <SidebarMenuButton
+                    asChild
+                    className="flex justify-start items-center px-[13px] py-5"
+                  >
+                    <div>
+                      <Plus />
+                      <span>Add New List</span>
+                    </div>
+                  </SidebarMenuButton>
+                </DialogTrigger>
+              </SidebarMenuItem>
+              <DialogContent className="bg-primary-200 outline-none ">
+                <DialogHeader>
+                  <DialogTitle className="text-white text-xl">
+                    Create a New Note
+                  </DialogTitle>
+                </DialogHeader>
+                <DialogDescription>
+                  <div>
+                    <NoteForm />
+                  </div>
+                </DialogDescription>
+              </DialogContent>
+            </Dialog>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
@@ -144,7 +177,7 @@ export function AppSidebar() {
             <DropdownMenu className="text-white">
               <DropdownMenuTrigger asChild className="text-white">
                 <SidebarMenuButton className="py-5">
-                  <User2 /> {user?.user.name}
+                  <User2 /> {user?.user?.name || user?.name || "Ruy"}
                   <ChevronUp className="ml-auto" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>

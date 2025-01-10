@@ -52,18 +52,15 @@ const authSlice = createSlice({
         (state.user = null),
           (state.isLoading = true),
           (state.isAuthenticated = false);
-        console.log(state.user);
       })
       .addCase(checkAuthenticatedUser.fulfilled, (state, action) => {
         (state.user = action.payload), (state.isAuthenticated = true);
         state.isLoading = false;
-        console.log(state.user);
       })
       .addCase(checkAuthenticatedUser.rejected, (state) => {
         (state.user = null),
           (state.isLoading = false),
           (state.isAuthenticated = false);
-        console.log(state.user);
       }),
 });
 

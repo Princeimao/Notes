@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const todoSchema = new mongoose.Schema(
+const NoteSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -13,7 +13,7 @@ const todoSchema = new mongoose.Schema(
       trim: true,
       maxlength: 500,
     },
-    isCompleted: {
+    isPin: {
       type: Boolean,
       default: false,
     },
@@ -27,4 +27,4 @@ const todoSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("Todo", todoSchema);
+export default mongoose.model("Note", NoteSchema);

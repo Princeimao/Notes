@@ -17,10 +17,10 @@ const userSchema = new mongoose.Schema({
     required: true,
     min: [8, "Password should atleast 8 character long"],
   },
-  todos: [
+  notes: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Todo",
+      ref: "Note",
     },
   ],
 });

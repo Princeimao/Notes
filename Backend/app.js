@@ -18,7 +18,7 @@ app.use(
 // routes
 
 import userRouter from "./src/routes/user.router.js";
-import todoRouter from "./src/routes/todo.router.js";
+import noteRouter from "./src/routes/note.router.js";
 
 app.use("/api/user/auth", userRouter);
-app.use("/api/todo", todoRouter);
+app.use("/api/todo", noteRouter);

@@ -20,3 +20,8 @@ export const signInFormSchema = z.object({
     message: "Password musch be at least 8 characters.",
   }),
 });
+
+export const noteSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+});
