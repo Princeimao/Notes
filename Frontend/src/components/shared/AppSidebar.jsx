@@ -38,12 +38,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { Button } from "../ui/button";
-
 import { Link } from "react-router-dom";
 import { SidebarFooter } from "../ui/sidebar";
 import { useSelector } from "react-redux";
-import NoteForm from "./form/NoteForm";
 
 const items = [
   {
@@ -139,7 +136,7 @@ export function AppSidebar() {
               </DropdownMenu>
             </SidebarMenuItem>
 
-            <Dialog>
+            {/* <Dialog>
               <SidebarMenuItem>
                 <DialogTrigger className="w-full">
                   <SidebarMenuButton
@@ -165,7 +162,7 @@ export function AppSidebar() {
                   </div>
                 </DialogDescription>
               </DialogContent>
-            </Dialog>
+            </Dialog> */}
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>

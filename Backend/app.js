@@ -21,4 +21,4 @@ import userRouter from "./src/routes/user.router.js";
 import noteRouter from "./src/routes/note.router.js";
 
 app.use("/api/user/auth", userRouter);
-app.use("/api/todo", noteRouter);
+app.use("/api/note", noteRouter);

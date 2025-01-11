@@ -12,22 +12,39 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useCreateNotes } from "../../../hooks/useNotes";
+import { useCreateNotes, useUpdateNotes } from "../../../hooks/useNotes";
 
-const NoteForm = ({ notes }) => {
-  const { mutateAsync: createNote, isPending: isLoading } = useCreateNotes();
+const NoteForm = ({ title, description, action, id, onSuccess }) => {
+  const {
+    mutateAsync: createNote,
+    isPending: isLoading,
+    isSuccess: isCreated,
+  } = useCreateNotes();
+  const {
+    mutateAsync: updateNote,
+    isPending,
+    isSuccess: isUpdated,
+  } = useUpdateNotes();
 
   const form = useForm({
     resolver: zodResolver(noteSchema),
     defaultValues: {
-      title: notes ? notes.title : "",
-      description: notes ? notes.description : "",
+      title: title || "",
+      description: description || "",
     },
   });
 
-  async function onSubmit(values) {
-    const response = await createNote(values);
+  async function onSubmit({ title, description }) {
+    if (action === "update") {
+      const response = await updateNote({ title, description, id });
+      console.log(response);
+      if (isUpdated) onSuccess();
+      return;
+    }
+
+    const response = await createNote({ title, description });
     console.log(response);
+    if (isCreated) onSuccess();
   }
   return (
     <Form {...form}>

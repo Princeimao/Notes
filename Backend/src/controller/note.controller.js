@@ -88,19 +88,20 @@ export const updateNote = async (req, res) => {
 
 export const deleteNote = async (req, res) => {
   try {
-    const id = req.params;
+    const { id } = req.params;
+    console.log(id);
     const { email } = req.user;
 
-    const deleteNote = await noteModel.findOneAndDelete(id);
+    const deleteNote = await noteModel.findOneAndDelete({ _id: id });
 
-    if (deleteNote) {
-      return res.status(500).json({
-        success: false,
-        message: "something went wrong while deleting note",
-      });
+    if (!deleteNote) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Note not found" });
     }
 
-    await userModel.findOneAndUpdate(email, { $pull: { notes: id } });
+    await userModel.findOneAndUpdate({ email }, { $pull: { notes: id } });
+
     res.status(200).json({
       success: true,
       message: "Note deleted successfully",

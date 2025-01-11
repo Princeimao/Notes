@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import Notes from "../../components/shared/Notes";
 import { useGetNotes } from "../../hooks/useNotes";
 import { Loader } from "lucide-react";
+import CreateNote from "../../components/shared/CreateNote";
 
 const Home = () => {
   const { user } = useSelector((state) => state.auth);
@@ -27,17 +28,17 @@ const Home = () => {
           All your notes are here, in one place!
         </p>
         <div className="grid grid-cols-4 gap-3">
-          {/* {notes.length < 0
-            ? notes.map((note) => (
-                <Notes
-                  key={note._id}
-                  title={note.title}
-                  description={note.description}
-                  id={note._id}
-                  date={note.updatedAt}
-                />
-              ))
-            : "no"} */}
+          <CreateNote />
+          {notes.map((note) => (
+            <Notes
+              key={note._id}
+              title={note.title}
+              description={note.description}
+              id={note._id}
+              date={note.updatedAt}
+              isLoading={isLoading}
+            />
+          ))}
         </div>
       </div>
     </div>
