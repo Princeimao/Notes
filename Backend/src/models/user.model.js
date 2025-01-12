@@ -23,6 +23,18 @@ const userSchema = new mongoose.Schema({
       ref: "Note",
     },
   ],
+  todos: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Todo",
+    },
+  ],
+  list: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "List",
+    },
+  ],
 });
 
 userSchema.pre("save", async function (next) {

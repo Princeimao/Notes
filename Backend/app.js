@@ -19,6 +19,10 @@ app.use(
 
 import userRouter from "./src/routes/user.router.js";
 import noteRouter from "./src/routes/note.router.js";
+import listRouter from "./src/routes/list.router.js";
+import todoRouter from "./src/routes/todo.router.js";
 
 app.use("/api/user/auth", userRouter);
 app.use("/api/note", noteRouter);
+app.use("/api/list", listRouter);
+app.use("/api/todo", todoRouter);
