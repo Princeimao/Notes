@@ -28,4 +28,4 @@ const listSchema = new mongoose.Schema({
   ],
 });
 
-export default mongoose.model("list", listSchema);
+export default mongoose.model("sideList", listSchema);

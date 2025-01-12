@@ -89,7 +89,6 @@ export const updateNote = async (req, res) => {
 export const deleteNote = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log(id);
     const { email } = req.user;
 
     const deleteNote = await noteModel.findOneAndDelete({ _id: id });

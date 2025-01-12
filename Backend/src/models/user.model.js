@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
   list: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "List",
+      ref: "sideList",
     },
   ],
 });
