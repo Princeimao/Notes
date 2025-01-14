@@ -8,7 +8,7 @@ import CreateNote from "../../components/shared/CreateNote";
 const Home = () => {
   const { user } = useSelector((state) => state.auth);
 
-  const { data: notes, isPending: isLoading, isError } = useGetNotes();
+  const { data: notes, isPending: isLoading } = useGetNotes();
 
   if (isLoading) {
     return (

@@ -44,22 +44,22 @@ import { useSelector } from "react-redux";
 
 const items = [
   {
-    url: "#",
+    url: "/upcoming",
     icon: ChevronsRight,
     title: "Upcoming",
   },
   {
-    url: "#",
+    url: "/today",
     icon: ListTodo,
     title: "Today",
   },
   {
-    url: "#",
+    url: "/calander",
     icon: CalendarDays,
     title: "Calendar",
   },
   {
-    url: "#",
+    url: "/",
     icon: StickyNote,
     title: "Sticky Wall",
   },
@@ -91,7 +91,7 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild className="py-5">
-                    <Link href={item.url}>
+                    <Link to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
                     </Link>

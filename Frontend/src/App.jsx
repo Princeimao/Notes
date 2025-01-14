@@ -4,6 +4,9 @@ import SignInForm from "./auth/forms/SignInForm";
 import AuthLayout from "./auth/AuthLayout";
 import Home from "./root/pages/Home";
 import Layout from "./root/Layout";
+import Upcoming from "./root/pages/Upcoming";
+import Today from "./root/pages/Today";
+import Calander from "./root/pages/Calander";
 //import { Toaster } from "./components/ui/toaster";
 
 function App() {
@@ -19,6 +22,9 @@ function App() {
           {/* Private Routes */}
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
+            <Route path="/upcoming" element={<Upcoming />} />
+            <Route path="/Today" element={<Today />} />
+            <Route path="/calander" element={<Calander />} />
           </Route>
         </Routes>
         {/* <Toaster /> */}
