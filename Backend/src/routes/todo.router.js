@@ -11,7 +11,7 @@ import {
 const router = express.Router();
 
 router.route("/createTodo").post(authMiddleware, createTodo);
-router.route("/update/:id").put(authMiddleware, updateTodo);
+router.route("/updateTodo/:id").put(authMiddleware, updateTodo);
 router.route("/getTodo").get(authMiddleware, getAllTodo);
 router.route("/deleteTodo/:id").delete(authMiddleware, deleteTodo);
 

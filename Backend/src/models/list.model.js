@@ -4,7 +4,7 @@ const listSchema = new mongoose.Schema({
   list: {
     type: String,
     required: true,
-    maxlength: 10,
+    maxlength: 20,
     required: true,
   },
   color: {

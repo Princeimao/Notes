@@ -8,7 +8,6 @@ export const createTodo = async (req, res) => {
     const { title, description, dueDate, list } = todoSchemaValidation.parse(
       req.body
     );
-
     const { email } = req.user;
 
     const user = await userModel.findOne({ email });
@@ -20,15 +19,42 @@ export const createTodo = async (req, res) => {
       });
     }
 
-    const userList = await listModel.findOne({
-      _id: list,
-      $or: [{ user: user._id }, { user: null }],
-    });
+    if (list) {
+      const userList = await listModel.findOne({
+        _id: list,
+        $or: [{ user: user._id }, { user: null }],
+      });
 
-    if (!userList) {
-      return res.status(404).json({
-        success: false,
-        message: "List not found",
+      if (!userList) {
+        return res.status(404).json({
+          success: false,
+          message: "List not found",
+        });
+      }
+
+      const createdTodo = await todoModel.create({
+        title,
+        description,
+        dueDate,
+        admin: user._id,
+      });
+
+      if (!createdTodo) {
+        return res.status(400).json({
+          success: false,
+          message: "Unable to create Todo",
+        });
+      }
+      userList.todos.push(createdTodo._id);
+      user.todos.push(createdTodo._id);
+
+      await user.save();
+      await userList.save();
+
+      return res.status(201).json({
+        success: true,
+        message: "Todo created successfully",
+        todo: createdTodo,
       });
     }
 
@@ -46,11 +72,8 @@ export const createTodo = async (req, res) => {
       });
     }
 
-    userList.todos.push(createdTodo._id);
     user.todos.push(createdTodo._id);
-
     await user.save();
-    await userList.save();
 
     res.status(201).json({
       success: true,
@@ -68,9 +91,10 @@ export const createTodo = async (req, res) => {
 };
 
 export const updateTodo = async (req, res) => {
+  // In the update todo, user can able to update the data but not able to move the todo from one list to another after creating todo. user have to delete the todo and then change the list.
   try {
     const update = req.body;
-    const id = req.params;
+    const { id } = req.params;
     const { email } = req.user;
 
     const user = await userModel.findOne({ email });
@@ -82,19 +106,7 @@ export const updateTodo = async (req, res) => {
       });
     }
 
-    const userList = await listModel.findOne({
-      _id: list,
-      $or: [{ user: user._id }, { user: null }],
-    });
-
-    if (!userList) {
-      return res.status(404).json({
-        success: false,
-        message: "List not found",
-      });
-    }
-
-    const updateTodo = await todoModel.findOneAndUpdate(id, update, {
+    const updateTodo = await todoModel.findOneAndUpdate({ _id: id }, update, {
       new: true,
     });
 
@@ -107,7 +119,7 @@ export const updateTodo = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: "Todo created successfully",
+      message: "Todo updated successfully",
       todo: updateTodo,
     });
   } catch (error) {
@@ -150,7 +162,9 @@ export const getAllTodo = async (req, res) => {
 export const deleteTodo = async (req, res) => {
   try {
     const { email } = req.user;
-    const id = req.params;
+    const { listId } = req.body;
+    const { id } = req.params;
+    console.log(id);
 
     const deleteTodo = await todoModel.findByIdAndDelete(id);
     if (!deleteTodo) {
@@ -171,6 +185,21 @@ export const deleteTodo = async (req, res) => {
         message: "Unauthorized Access",
       });
     }
+
+    if (listId) {
+      const list = await listModel.findOneAndUpdate(
+        { _id: listId },
+        { $pull: { todos: id } }
+      );
+
+      if (!list) {
+        return res.status(400).json({
+          success: false,
+          message: "Unable to delete the todo from the list",
+        });
+      }
+    }
+
     res.status(201).json({
       success: true,
       message: "Todo deleted successfully",
