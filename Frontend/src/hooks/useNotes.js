@@ -6,7 +6,6 @@ export const useCreateNotes = () => {
   return useMutation({
     mutationFn: (values) => createNotes(values),
     onSuccess: () => {
-      console.log();
       queryClient.invalidateQueries({
         queryKey: ["GET_RECENT_NOTES"],
       });

@@ -25,3 +25,8 @@ export const noteSchema = z.object({
   title: z.string(),
   description: z.string(),
 });
+
+export const todoSchema = z.object({
+  title: z.string(),
+  description: z.string().optional(),
+});
