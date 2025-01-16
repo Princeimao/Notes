@@ -1,7 +1,11 @@
 import { axiosInstance } from "./axiosInstance";
 
 export const createList = async (value) => {
-  const response = await axiosInstance.post("/api/list/createList", value);
+  console.log(value);
+  const response = await axiosInstance.post("/api/list/createList", {
+    list: value.title,
+    color: value.color,
+  });
   return response;
 };
 

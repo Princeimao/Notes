@@ -44,22 +44,42 @@ import { useState } from "react";
 import Todo from "../Todo";
 import CreateTodo from "../CreateTodo";
 import { useGetList } from "../../../hooks/useList";
+import { useCreateTodo, useDeleteTodo } from "../../../hooks/useTodo";
 
-const TodoForm = () => {
-  const [date, setDate] = useState("");
+const TodoForm = ({
+  title,
+  description,
+  complete,
+  subtodo,
+  id,
+  list: todoList,
+  dueDate,
+}) => {
+  const [date, setDate] = useState(dueDate ? dueDate : "");
   const [list, setList] = useState("");
   const { data: lists, isPending: isLoading } = useGetList();
+  const { mutateAsync: createTodo, isPending: isTodoCreating } =
+    useCreateTodo();
+  const { mutateAsync: deleteTdo } = useDeleteTodo();
 
   const form = useForm({
     resolver: zodResolver(todoSchema),
     defaultValues: {
-      title: "",
-      description: "",
+      title: title ? title : "",
+      description: description ? description : "",
     },
   });
 
-  function onSubmit(values) {
-    console.log(values, date, list);
+  async function deleteTodo() {
+    console.log(id);
+    const response = await deleteTdo({ id });
+    console.log(response);
+  }
+
+  async function onSubmit({ title, description }) {
+    console.log(date);
+    const response = await createTodo({ title, description, date, list });
+    console.log(response);
   }
 
   return (
@@ -147,7 +167,13 @@ const TodoForm = () => {
                 <Calendar
                   mode="single"
                   selected={date}
-                  onSelect={setDate}
+                  onSelect={(selectedDate) => {
+                    if (selectedDate instanceof Date && !isNaN(selectedDate)) {
+                      setDate(format(selectedDate, "yyyy-MM-dd")); // Format as "yyyy-MM-dd"
+                    } else {
+                      console.error("Invalid date selected:", selectedDate);
+                    }
+                  }}
                   initialFocus
                 />
               </PopoverContent>
@@ -175,6 +201,12 @@ const TodoForm = () => {
           </SheetFooter>
         </form>
       </Form>
+      <Button
+        onClick={() => deleteTodo()}
+        className="bg-red-500 hover:bg-red-600 active:bg-red-700"
+      >
+        Delete Todo
+      </Button>
     </Sheet>
   );
 };

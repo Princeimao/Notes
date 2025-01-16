@@ -7,6 +7,7 @@ import {
   Plus,
   User2,
   ChevronUp,
+  Loader,
 } from "lucide-react";
 
 import {
@@ -41,6 +42,8 @@ import {
 import { Link } from "react-router-dom";
 import { SidebarFooter } from "../ui/sidebar";
 import { useSelector } from "react-redux";
+import { useGetList } from "../../hooks/useList";
+import ListForm from "./form/ListForm";
 
 const items = [
   {
@@ -66,9 +69,9 @@ const items = [
 ];
 
 export function AppSidebar() {
-  // const createNote = async () => {};
-
+  const { data: Lists, isPending: isLoading } = useGetList();
   const { user } = useSelector((state) => state.auth);
+
   return (
     <Sidebar collapsible="offcanvas">
       {/* Header Area */}
@@ -110,15 +113,20 @@ export function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <Link
-                  href="#"
-                  className="flex justify-start items-center px-2 "
-                >
-                  <div className="w-3 h-3 bg-slate-50 rounded-sm"></div>
-                  <span>Home</span>
-                </Link>
-              </SidebarMenuButton>
+              {!isLoading && Lists.length !== 0
+                ? Lists.map((list) => (
+                    <SidebarMenuButton key={list._id} asChild>
+                      <Link
+                        href="#"
+                        className="flex justify-start items-center px-2 "
+                      >
+                        <div className={`w-3 h-3 rounded-sm ${list.color}`} />
+                        <span>{list.list}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  ))
+                : null}
+
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <SidebarMenuAction>
@@ -136,7 +144,7 @@ export function AppSidebar() {
               </DropdownMenu>
             </SidebarMenuItem>
 
-            {/* <Dialog>
+            <Dialog>
               <SidebarMenuItem>
                 <DialogTrigger className="w-full">
                   <SidebarMenuButton
@@ -153,16 +161,16 @@ export function AppSidebar() {
               <DialogContent className="bg-primary-200 outline-none ">
                 <DialogHeader>
                   <DialogTitle className="text-white text-xl">
-                    Create a New Note
+                    Create List
                   </DialogTitle>
                 </DialogHeader>
                 <DialogDescription>
                   <div>
-                    <NoteForm />
+                    <ListForm />
                   </div>
                 </DialogDescription>
               </DialogContent>
-            </Dialog> */}
+            </Dialog>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>

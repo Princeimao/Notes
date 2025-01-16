@@ -30,3 +30,8 @@ export const todoSchema = z.object({
   title: z.string(),
   description: z.string().optional(),
 });
+
+export const listSchema = z.object({
+  title: z.string().min(1, "List cannot be empty"),
+  color: z.string().min(1, "Color is required"),
+});
