@@ -8,6 +8,7 @@ export const createTodo = async (req, res) => {
     const { title, description, dueDate, list } = todoSchemaValidation.parse(
       req.body
     );
+    console.log(title, description, dueDate, list);
     const { email } = req.user;
 
     const user = await userModel.findOne({ email });

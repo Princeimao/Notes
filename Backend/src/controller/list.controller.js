@@ -27,6 +27,7 @@ export const createList = async (req, res) => {
   //seedDefaultLists();
   try {
     const { list, color } = listSchemaValidation.parse(req.body);
+    console.log(list, color);
     const { email } = req.user;
 
     const user = await userModel.findOne({ email });

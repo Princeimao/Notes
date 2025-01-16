@@ -3,7 +3,7 @@ import { z } from "zod";
 export const todoSchemaValidation = z.object({
   title: z.string().min(1, "title cannot be empty"),
   description: z.optional(z.string()),
-  dueDate: z.string().date().optional(),
+  dueDate: z.optional(z.string()),
   list: z.string().optional(),
 });
 
